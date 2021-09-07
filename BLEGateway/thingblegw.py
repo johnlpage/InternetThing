@@ -14,7 +14,7 @@ conn_str = ""
 configfile = "/home/pi/connstr.txt"
 collection = None
 writebatch = []
-
+BATCHLEN=1
 
 def connect_to_mongoDB():
     global collection
@@ -47,7 +47,7 @@ def write_to_mongoDB(x, y, z):
 
     doc = {"ts": datetime.datetime.utcnow(), "x": x, "y": y, "z": z}
     writebatch.append(doc)
-    if len(writebatch) > 20:
+    if len(writebatch) > BATCHLEN: 
         flush_batch()
 
 
@@ -154,5 +154,3 @@ if __name__ == "__main__":
             except Exception as e:
                 pprint(e)
                 cube = None
-
-

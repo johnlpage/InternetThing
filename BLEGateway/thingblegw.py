@@ -26,7 +26,6 @@ def connect_to_mongoDB():
                 print(e)  # No readable config
         client = MongoClient(conn_str)
         collection = client.blescan.raw
-        collection.drop()
     except Exception as e:
         print(e)
         collection = None
@@ -45,7 +44,7 @@ def write_to_mongoDB(x, y, z):
     if collection == None:
         connect_to_mongoDB()
 
-    doc = {"ts": datetime.datetime.utcnow(), "x": x, "y": y, "z": z}
+    doc = {"ts": datetime.datetime.utcnow(), "ax": x, "ay": y, "az": z}
     writebatch.append(doc)
     if len(writebatch) > BATCHLEN: 
         flush_batch()
@@ -56,11 +55,11 @@ class NotifyDelegate(DefaultDelegate):
         DefaultDelegate.__init__(self)
 
     def handleNotification(self, cHandle, data):
-        x = (int.from_bytes(data[0:2], "little") - 5000) / 1000
-        y = (int.from_bytes(data[2:4], "little") - 5000) / 1000
-        z = (int.from_bytes(data[4:6], "little") - 5000) / 1000
-        print(f"x: {x} y: {y} z: {z}")
-        write_to_mongoDB(x, y, z)
+        ax = (int.from_bytes(data[0:2], "little") - 5000) / 1000
+        ay = (int.from_bytes(data[2:4], "little") - 5000) / 1000
+        az = (int.from_bytes(data[4:6], "little") - 5000) / 1000
+        #print(f"ax: {x} ay: {y} az: {z}")
+        write_to_mongoDB(ax, ay, az)
 
 
 class ScanDelegate(DefaultDelegate):
@@ -71,7 +70,7 @@ class ScanDelegate(DefaultDelegate):
         pass
 
 
-def find_cube():
+def find_thing():
 
     scanner = Scanner().withDelegate(ScanDelegate())
     sensor = None
@@ -82,7 +81,7 @@ def find_cube():
         print("Scan Complete")
 
         for dev in devices:
-            print(f"Device {dev.addr} {dev.addrType}, RSSI={dev.rssi} dB")
+            #print(f"Device {dev.addr} {dev.addrType}, RSSI={dev.rssi} dB")
             doc = {
                 "addr": dev.addr,
                 "atype": dev.addrType,
@@ -90,67 +89,69 @@ def find_cube():
                 "ts": datetime.datetime.utcnow(),
             }
             for (adtype, desc, value) in dev.getScanData():
-                print(f"{desc} : {value}")
+                #print(f"{desc} : {value}")
                 if DEVICENAME in value:
                     sensor = dev
-
+    print("Found a thing")
     return sensor
 
 
-def connect_to_cube(device):
-    cube = None
-    while cube == None:
+def connect_to_thing(device):
+    thing = None
+    while thing == None:
         print("Tying to connect")
         try:
-            cube = Peripheral(sensor)
+            thing = Peripheral(sensor)
+            print("Connected")
         except Exception as e:
             print(e)
             time.sleep(1)
 
     try:
-        services = cube.getServices()
+        services = thing.getServices()
     except Exception as e:
         print(e)
-        cube = None
+        thing = None
         return
         # Bluetooth LE breaks a lot
 
-    cube.setDelegate(NotifyDelegate(None))
+    thing.setDelegate(NotifyDelegate(None))
     try:
-        cubeService = cube.getServiceByUUID(SERVICEUUID)  # Mon90DB
-        motionCharacteristics = cubeService.getCharacteristics(forUUID=CHARUUID)  # Docs
+        thingService = thing.getServiceByUUID(SERVICEUUID)  # Mon90DB
+        motionCharacteristics = thingService.getCharacteristics(forUUID=CHARUUID)  # Docs
         configHandle = motionCharacteristics[0].getHandle() + 1
-        cube.writeCharacteristic(configHandle, b"\x01\x00")
-        return cube
+        thing.writeCharacteristic(configHandle, b"\x01\x00")
+        print("SUBSCRIBED")
+        return thing
     except Exception as e:
-        print("Cube is missing services?")
+        print("thing is missing services?")
         print(e)
         try:
-            cube.disconnect()
+            thing.disconnect()
         except:
             pass
-        cube = None
+        thing = None
         return
         # Bluetooth LE breaks a lot
-    return cube
+    return thing
 
 
 if __name__ == "__main__":
 
-    print("Looking for a suitable cube")
+    print("Looking for a suitable thing")
     sensor = None
-    cube = None
+    thing = None
 
     while True:
         if sensor == None:
-            sensor = find_cube()
+            sensor = find_thing()
 
-        if cube == None:
-            cube = connect_to_cube(sensor)
+        if thing == None:
+            thing = connect_to_thing(sensor)
         else:
             try:
-                if cube.waitForNotifications(0.5) == False:
+                if thing.waitForNotifications(0.5) == False:
                     flush_batch()  # Nothing new
             except Exception as e:
                 pprint(e)
-                cube = None
+                thing = None

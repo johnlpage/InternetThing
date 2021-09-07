@@ -1,8 +1,10 @@
 let realmapp = null;
 let vueapp = null;
 let lastSeen = new Date();
-let data,line,x
-let databuffer=[]
+let chartdata = {}
+//let databuffer = []
+const charts = ['az', 'ay', 'ax']
+
 
 async function initRealm() {
     realmapp = new Realm.App({ id: "bledemo-pjitb" });
@@ -25,102 +27,159 @@ function initVue() {
     return v;
 }
 
-function initd3() {
+
+function initd3chart(id) {
+
     var n = 500
-    //random = d3.randomNormal(0, .2)
+    let data = d3.range(n).map(() => 0);
 
-    data = d3.range(n).map(()=>0);
+    let svg = d3.select(`#${id}`),
+        margin = { top: 20, right: 20, bottom: 20, left: 40 },
+        width = +svg.attr("width") - margin.left - margin.right,
+        height = +svg.attr("height") - margin.top - margin.bottom
 
-var svg = d3.select("svg"),
-    margin = {top: 20, right: 20, bottom: 20, left: 40},
-    width = +svg.attr("width") - margin.left - margin.right,
-    height = +svg.attr("height") - margin.top - margin.bottom,
-    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    svg.append("rect")
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .attr("fill", "lightgrey");
 
- x = d3.scaleLinear()
-    .domain([1, n - 2])
-    .range([0, width]);
+    let g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var y = d3.scaleLinear()
-    .domain([-4, 4])
-    .range([height, 0]);
+    isHorizontal = width > height;
+    //isHorizontal=true
 
- line = d3.line()
-    .curve(d3.curveBasis)
-    .x(function(d, i) { return x(i); })
-    .y(function(d, i) { return y(d); });
+    let x, y, line;
 
-g.append("defs").append("clipPath")
-    .attr("id", "clip")
-  .append("rect")
-    .attr("width", width)
-    .attr("height", height);
 
-g.append("g")
-    .attr("class", "axis axis--x")
-    .attr("transform", "translate(0," + y(0) + ")")
-    .call(d3.axisBottom(x));
+    if (isHorizontal) {
+        x = d3.scaleLinear()
+            .domain([1, n - 2])
+            .range([0, width]);
 
-g.append("g")
-    .attr("class", "axis axis--y")
-    .call(d3.axisLeft(y));
+        y = d3.scaleLinear()
+            .domain([-4, 4])
+            .range([height, 0]);
 
-g.append("g")
-    .attr("clip-path", "url(#clip)")
-  .append("path")
-    .datum(data)
-    .attr("class", "line")
-  .transition()
-    .duration(15)
-    .ease(d3.easeLinear)
-    .on("start", tick);
+        line = d3.line()
+            .curve(d3.curveBasis)
+            .x(function (d, i) { return x(i); })
+            .y(function (d, i) { return y(d); });
+
+    } else {
+        x = d3.scaleLinear()
+            .domain([-4, 4])
+            .range([width, 0]);
+
+        y = d3.scaleLinear()
+            .domain([1, n - 2])
+            .range([0, height]);
+
+
+        line = d3.line()
+            .curve(d3.curveBasis)
+            .x(function (d, i) { return x(d); })
+            .y(function (d, i) { return y(i); });
+    }
+
+
+
+    g.append("defs").append("clipPath")
+        .attr("id", `clip_${id}`)
+        .append("rect")
+        .attr("width", width)
+        .attr("height", height);
+
+
+    g.append("g")
+        .attr("class", "axis axis--x")
+        .attr("transform", "translate(0," + y(0) + ")")
+        .call(d3.axisBottom(x));
+
+    g.append("g")
+        .attr("class", "axis axis--y")
+        .call(d3.axisLeft(y));
+
+    let ldata = { svg, data, x, y, line, databuf: [], isHorizontal }
+    chartdata[id] = ldata;
+
+    g.append("g")
+        .attr("clip-path", `url(#clip_${id})`)
+        .append("path")
+        .datum(data)
+        .attr("class", "line")
+        .attr("id", `p_${id}`)
+        .transition()
+        .duration(20)
+        .ease(d3.easeLinear)
+        .on("start", tickv);
 }
 
 
-function tick() {
-    //random = d3.randomNormal(0, .2),
+function tickv() {
 
-    if(databuffer.length == 0) { databuffer.push({ts:new Date(),z:1})}; //Add a 0 to scroll it off
-    datapoint = databuffer.shift().z-1
+    gname = this.id.substring(2)
+    cdata = chartdata[gname]
+
+    if (cdata.databuf.length == 0) {  //Add a 0 to scroll it off
+        empty = { ts: new Date() }
+        //Z is gravity so 1 by default
+        if (gname == "az") { empty[gname] = 1 } else { empty[gname] = 0 }
+        cdata.databuf.push(empty)
+    };
+
+
+    datapoint = cdata.databuf.shift()[gname]
 
     // Push a new data point onto the back.
-    data.push(datapoint);
-    //console.log(datapoint)
+    cdata.data.push(datapoint);
+
     // Redraw the line.
     d3.select(this)
-        .attr("d", line)
+        .attr("d", cdata.line)
         .attr("transform", null);
-  
-    // Slide it to the left.
-    d3.active(this)
-        .attr("transform", "translate(" + x(0) + ",0)")
-      .transition()
-        .on("start", tick);
-  
-    // Pop the old data point off the front. 
-    data.shift();
-    
-  
-  }
 
+    if (cdata.isHorizontal) {
+        d3.active(this)
+            .attr("transform", "translate(" + cdata.x(0) + ",0)")
+            .transition()
+            .on("start", tickv);
+    } else {
+
+        // Slide it down
+        d3.active(this)
+            .attr("transform", "translate(" + cdata.y(0) + ",0)")
+            .transition()
+            .on("start", tickv);
+
+    }
+    // Pop the old data point off the front. 
+    cdata.data.shift();
+
+
+}
 
 
 async function onLoad() {
     vueapp = initVue()
     await initRealm()
     if (realmapp.currentUser) { vueapp.message = realmapp.currentUser.id }
-    initd3()
+    //Setup up all our charts
+    charts.forEach((name) => { initd3chart(name) });
 
-    //Get some data
-    updateData();
+    updateData(); //Async Realm data pull
 }
 
-async function updateData() {
+function updateData() {
 
     user = realmapp.currentUser;
-    const result = await user.functions.getData(lastSeen);
-    if(result.data.length > 0) { lastSeen = result.data[0].ts } //Watch for empty
-    databuffer = databuffer.concat(result.data.reverse())
-   // console.log(databuffer.length)
-    setTimeout( updateData,1);
+    user.functions.getData(lastSeen).then((result) => {
+        if (result.data.length > 0) { lastSeen = result.data[0].ts } //Buffer comes back newest first
+
+        result.data.reverse() // As it was newest first
+        charts.forEach((cname) => {
+            chartdata[cname].databuf = chartdata[cname].databuf.concat(result.data)
+        }
+        ); //We couuld filter some fields out here as we have all data for each chart
+        setTimeout(updateData, 1);
+    });
 }

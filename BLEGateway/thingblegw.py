@@ -14,7 +14,17 @@ conn_str = ""
 configfile = "/home/pi/connstr.txt"
 collection = None
 writebatch = []
-BATCHLEN=1
+BATCHLEN=1 
+
+values = ["ax","ay","az","gx","gy","gz","mx","my","mz"]
+scale = [1000,1000,1000,2,2,2,10,10,10]
+
+def create_timeseries_collection(client):
+    try:
+        client.blescan.create_collection("raw",timeseries = { "timeField": "ts", "metaField": "device"})
+        
+    except Exception as e:
+        print(e) 
 
 def connect_to_mongoDB():
     global collection
@@ -25,6 +35,7 @@ def connect_to_mongoDB():
             except Exception as e:
                 print(e)  # No readable config
         client = MongoClient(conn_str)
+        create_timeseries_collection(client)
         collection = client.blescan.raw
     except Exception as e:
         print(e)
@@ -38,13 +49,14 @@ def flush_batch():
         writebatch = []
 
 
-def write_to_mongoDB(x, y, z):
+def write_to_mongoDB(doc):
     global writebatch
 
     if collection == None:
         connect_to_mongoDB()
 
-    doc = {"ts": datetime.datetime.utcnow(), "ax": x, "ay": y, "az": z}
+    doc["ts"]=datetime.datetime.utcnow();
+    doc["device"] = "thing1" 
     writebatch.append(doc)
     if len(writebatch) > BATCHLEN: 
         flush_batch()
@@ -54,12 +66,17 @@ class NotifyDelegate(DefaultDelegate):
     def __init__(self, params):
         DefaultDelegate.__init__(self)
 
+    #TODO: REFACTOR to handle missing data
     def handleNotification(self, cHandle, data):
-        ax = (int.from_bytes(data[0:2], "little") - 5000) / 1000
-        ay = (int.from_bytes(data[2:4], "little") - 5000) / 1000
-        az = (int.from_bytes(data[4:6], "little") - 5000) / 1000
-        #print(f"ax: {x} ay: {y} az: {z}")
-        write_to_mongoDB(ax, ay, az)
+        rec = {}
+        c=0
+        for valname in values:
+            value = int.from_bytes(data[c*2:c*2+2], "little")
+            if value > 0:
+                rec[valname] = (value - 5000) / scale[c]
+            c=c+1
+
+        write_to_mongoDB(rec)
 
 
 class ScanDelegate(DefaultDelegate):

@@ -1,42 +1,42 @@
 /*
- * A Bluetooth LE enabled Acellerometer/Gyro/Magnetomeoter for the 
- * Arduino Nano BLE - Exposes one Service with One Characteristic
- * That has the info packed 2 bytes per axis as a little endian integer
- * Accreleration is 1000-9000 with 0 at 5000 anfd in first 3 bytes
- * GYRO and MAG are TODO
- */
+   A Bluetooth LE enabled Acellerometer/Gyro/Magnetomeoter for the
+   Arduino Nano BLE - Exposes one Service with One Characteristic
+   That has the info packed 2 bytes per axis as a little endian integer
+   Accreleration is 1000-9000 with 0 at 5000 anfd in first 3 bytes
+   GYRO and MAG are TODO
+*/
 #include <ArduinoBLE.h>
 #include <Arduino_LSM9DS1.h>
 
- // Not an OFFICIAL Service GUID - 90db short for mon9oDB
+// Not an OFFICIAL Service GUID - 90db short for mon9oDB
 BLEService dataService("90db");
 
 // Not an Official characteristic GUID - short for "docs"
 BLECharacteristic movementChar("d0c5",  //16-bit characteristic UUID
-    BLERead | BLENotify,12); // remote clients will be able to get notifications if this characteristic changes
+                               BLERead | BLENotify, 18); // remote clients will be able to get notifications if this characteristic changes
 
 
 long previousMillis = 0;  // Used to keep track of when last reading sent
-bool debug=false; //If I used #define I coudl reduce code size but don't need to for now.
+bool debug = false; //If I used #define I coudl reduce code size but don't need to for now.
 
 
 void setup() {
-  if(debug) {
+  if (debug) {
     Serial.begin(9600);    // initialize serial communication
-    while(!Serial) {}  //Infinite loop if no cable connected so make sure we are NOT in debug
+    while (!Serial) {} //Infinite loop if no cable connected so make sure we are NOT in debug
   }
 
 
   if (!IMU.begin()) {
-    if(debug) Serial.println("Failed to initialize IMU!");
+    if (debug) Serial.println("Failed to initialize IMU!");
     while (1); //Infinite loop
   }
-  
+
   pinMode(LED_BUILTIN, OUTPUT); // initialize the built-in LED pin to indicate when a central is connected
 
   // begin initialization
   if (!BLE.begin()) {
-    if(debug) Serial.println("starting BLE failed!");
+    if (debug) Serial.println("starting BLE failed!");
     while (1);
   }
 
@@ -49,7 +49,7 @@ void setup() {
   BLE.setAdvertisedService(dataService); // add the service UUID
   dataService.addCharacteristic( movementChar); // add the movement characteristic
   BLE.addService(dataService); // Add the  service
-   
+
 
   /* Start advertising BLE.  It will start continuously transmitting BLE
      advertising packets and will be visible to remote BLE central devices
@@ -57,7 +57,7 @@ void setup() {
 
   // start advertising
   BLE.advertise();
-   if(debug) Serial.println("Bluetooth device active, waiting for connections...");
+  if (debug) Serial.println("Bluetooth device active, waiting for connections...");
 }
 
 void loop() {
@@ -66,9 +66,9 @@ void loop() {
 
   // if a central is connected to the peripheral:
   if (central) {
-     if(debug)Serial.print("Connected to central: ");
+    if (debug)Serial.print("Connected to central: ");
     // print the central's BT address:
-     if(debug) Serial.println(central.address());
+    if (debug) Serial.println(central.address());
     // turn on the LED to indicate the connection:
     digitalWrite(LED_BUILTIN, HIGH);
 
@@ -81,24 +81,47 @@ void loop() {
         updateReadings();
       }
     }
-    
+
     // when the central disconnects, turn off the LED:
     digitalWrite(LED_BUILTIN, LOW);
-     if(debug) Serial.print("Disconnected from central: ");
-     if(debug) Serial.println(central.address());
+    if (debug) Serial.print("Disconnected from central: ");
+    if (debug) Serial.println(central.address());
   }
 }
 
 void updateReadings() {
-    unsigned short value[6];
-    float x, y, z;
-     
-     if (IMU.accelerationAvailable()) {
+  unsigned short value[9];
+  float x, y, z;
+
+ for(int i=0;i<9;i++) value[i]=0; //Zero out - not valid reading
+  
+  if (IMU.accelerationAvailable()) {
     IMU.readAcceleration(x, y, z);
-    if(debug) Serial.println(x);
-    value[0]=x*1000+5000; //Scaled from 1000 to 9000
-    value[1]=y*1000+5000;
-    value[2]=z*1000+5000;
-    movementChar.writeValue(value,12);  // update the characteristic
+   
+    value[0] = x * 1000 + 5000; //Scaled from 1000 to 9000
+    value[1] = y * 1000 + 5000;
+    value[2] = z * 1000 + 5000;
+
   }
+
+  if (IMU.gyroscopeAvailable()) {
+    IMU.readGyroscope(x, y, z);
+    
+    value[3] = x*2  + 5000; //Scaled from 1000 to 9000
+    value[4] = y*2 + 5000;
+    value[5] = z*2  + 5000;
+  }
+
+
+  if (IMU.magneticFieldAvailable()) {
+    IMU.readMagneticField(x, y, z);
+
+    value[6] = x * 100 + 5000; //Scaled from 1000 to 9000
+    value[7] = y * 100 + 5000;
+    value[8] = z * 100 + 5000;
+  }
+
+
+  movementChar.writeValue(value, 18); // update the characteristic
+
 }

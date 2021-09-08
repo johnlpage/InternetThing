@@ -3,8 +3,8 @@ let vueapp = null;
 let lastSeen = new Date();
 let chartdata = {}
 //let databuffer = []
-const charts = ['az', 'ay', 'ax']
-
+const charts = ['az', 'ay', 'ax','gx','gy','gz','mx','my','mz']
+const ranges = { a: 4, g: 1000, m: 400}
 
 async function initRealm() {
     realmapp = new Realm.App({ id: "bledemo-pjitb" });
@@ -50,6 +50,7 @@ function initd3chart(id) {
 
     let x, y, line;
 
+    rangescale = ranges[id.substring(0,1)]
 
     if (isHorizontal) {
         x = d3.scaleLinear()
@@ -57,7 +58,7 @@ function initd3chart(id) {
             .range([0, width]);
 
         y = d3.scaleLinear()
-            .domain([-4, 4])
+            .domain([-rangescale, rangescale])
             .range([height, 0]);
 
         line = d3.line()
@@ -67,7 +68,7 @@ function initd3chart(id) {
 
     } else {
         x = d3.scaleLinear()
-            .domain([-4, 4])
+            .domain([-rangescale, rangescale])
             .range([width, 0]);
 
         y = d3.scaleLinear()
@@ -109,7 +110,7 @@ function initd3chart(id) {
         .attr("class", "line")
         .attr("id", `p_${id}`)
         .transition()
-        .duration(20)
+        .duration(15)
         .ease(d3.easeLinear)
         .on("start", tickv);
 }
@@ -120,19 +121,32 @@ function tickv() {
     gname = this.id.substring(2)
     cdata = chartdata[gname]
 
+    //We have no more data at all to add an empty record
+    //We will figure out what to do with that in the next lin
     if (cdata.databuf.length == 0) {  //Add a 0 to scroll it off
         empty = { ts: new Date() }
-        //Z is gravity so 1 by default
-        if (gname == "az") { empty[gname] = 1 } else { empty[gname] = 0 }
         cdata.databuf.push(empty)
     };
+    newcount =0;
+    //If we built up a backlog in the data buffer clear it by sending up to 5 at a time
+    while(cdata.databuf.length > 5) {0}
+        datapoint = cdata.databuf.shift()[gname]
+        if(datapoint == undefined) {
+            //Either we had no data or we dont have a value for this metric
+            //This is possible as we don't get magentometer readings every time
+            //we could just duplicate the last data point we had
+            datapoint = cdata.data[cdata.data.length]
+            if (datapoint == undefined) datapoint=0;
+        }
+
+        //If we have too many datapoints not shown push them through faster
 
 
-    datapoint = cdata.databuf.shift()[gname]
+        // Push a new data point onto the back.
 
-    // Push a new data point onto the back.
-    cdata.data.push(datapoint);
-
+        cdata.data.push(datapoint);
+        newcount++;
+    }
     // Redraw the line.
     d3.select(this)
         .attr("d", cdata.line)
@@ -153,8 +167,7 @@ function tickv() {
 
     }
     // Pop the old data point off the front. 
-    cdata.data.shift();
-
+    while(newcount-- > 0) { cdata.data.shift(); }
 
 }
 

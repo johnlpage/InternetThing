@@ -1,0 +1,78 @@
+body {
+  background-color: white;
+  font-family: "Lucida Console", "Courier New", monospace;
+  font-size: small;
+}
+
+
+.button {
+    font: bold 11px Arial;
+    text-decoration: none;
+    background-color: #EEEEEE;
+    color: #333333;
+    padding: 2px 6px 2px 6px;
+    border-top: 1px solid #CCCCCC;
+    border-right: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+    border-left: 1px solid #CCCCCC;
+  }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    background-color: #13aa52;
+    padding: 10px;
+  }
+  .grid-item {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+  }
+
+  .functioncode {
+float: left;
+  }
+
+  .derivedhart {
+ float; right;
+  }
+  .code {
+      display:block;
+  }
+.chart {
+    border: 1px solid grey;
+   float:left;
+}
+
+
+.scrollgraph {
+    border: 1px solid grey;
+}
+
+
+.wfuncs {
+    width: 100%
+}
+
+.funclist {
+    float: left;
+}
+.derivedchart {
+    float:right;
+}
+
+.runbutton {
+    float: right;
+}
+
+.mongocharts {
+    float: left;
+
+}
+.line {
+    fill: none;
+    stroke: #000;
+    stroke-width: 1.5px;
+  }

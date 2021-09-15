@@ -1,0 +1,93 @@
+<html>
+
+<head>
+    <style>
+
+    </style>
+    <link rel="stylesheet" href="mongostyle.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://unpkg.com/realm-web@1.2.0/dist/bundle.iife.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="code.js"></script>
+</head>
+
+<body onLoad="onLoad()">
+    <div id="app">
+     
+
+        <table>
+            <tr>
+                <th></th>
+                <th> Vertical (Y)</th>
+                <th> Horizontal (Z)</th>
+                <th> Forward(X) </th>
+            </tr>
+            <tr class="acceleration">
+                <td>Acceleration</td>
+                <td>
+                    <svg width="300" height="200" id="ay"></svg>
+                </td>
+                <td>
+                    <svg id="az" width="300" height="300"></svg>
+                </td>
+                <td>
+                    <svg id="ax" width="300" height="200"></svg>
+                </td>
+            </tr>
+
+            <tr class="gyro">
+                <td>Rotation</td>
+                <td>
+                    <svg id="gy" width="300" height="300"></svg>
+                </td>
+                <td>
+                    <svg id="gz" width="300" height="200"></svg>
+                </td>
+                <td>
+                    <svg id="gx" width="300" height="200"></svg>
+                </td>
+            </tr>
+
+            <tr class="magnetic">
+                <td>Direction by Magnetic Field </td>
+                <td>
+                    <svg id="my" width="300" height="200"></svg>
+                </td>
+                <td>
+                    <svg id="mz" width="300" height="300"></svg>
+                </td>
+                <td>
+                    <svg id="mx" width="300" height="200"></svg>
+                </td>
+            </tr>
+
+        </table>
+
+        <table>
+            <tr>
+                <td><select v-model="aggregation" class="wfuncs">
+                        <option v-for="option in wfuncs" v-bind:value="option.function">
+                            {{ option.name }}
+                        </option>
+                    </select></td>
+                <td>
+                     <button v-on:click="updateAggreagtion">Test Window Function</button> 
+                </td>
+            </tr>
+            <tr>
+                <td><textarea cols="60" rows="18" v-model="aggregation" placeholder=""></textarea></td>
+                <td><svg class="aggout" id="value" width="400" height="300"></svg>
+                    <p></p>
+                </td>
+            </tr>
+
+
+        </table>
+        {{errormsg}}
+<iframe style="background: #FFFFFF;border: none;border-radius: 2px;box-shadow: 0 2px 10px 0 rgba(70, 76, 79, .2);" width="640" height="480" src="https://charts.mongodb.com/charts-blescan-vcwfn/embed/charts?id=27c7b0b9-dd8e-4916-8736-6394cd8d711e&theme=light"></iframe>
+
+    </div>
+
+</body>
+
+</html>

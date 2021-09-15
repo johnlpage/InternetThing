@@ -1,38 +1,60 @@
 <html>
-    <head>
-        <style>
-            .line {
-              fill: none;
-              stroke: #000;
-              stroke-width: 1.5px;
-            }
-            </style>
-        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-        <script src="https://unpkg.com/realm-web@1.2.0/dist/bundle.iife.js"></script>
-        <script src="https://d3js.org/d3.v7.min.js"></script>
-        <script src="code.js"></script>
-    </head>
-    <body onLoad="onLoad()">
-        Test
-       
-        <div id="app">
-            RealmUserId: {{ message }}<hr>
-           <div>
-               <div style="float:left" >az: <svg id="az" width="400" height="300"></svg></div>
-           <div style="float:left" >ax: <svg id="ax" width="400" height="300"></svg></div>
-           <div style="float:left" >ay: <svg id="ay" width="300" height="400"></svg></div>
-</div>
-<div>
-    <div style="float:left" >gz: <svg id="gz" width="400" height="300"></svg></div>
-<div style="float:left" >gx: <svg id="gx" width="400" height="300"></svg></div>
-<div style="float:left" >gy: <svg id="gy" width="300" height="400"></svg></div>
-</div>
-<div>
-    <div style="float:left" >mx: <svg id="mz" width="400" height="300"></svg></div>
-<div style="float:left" >mx: <svg id="mx" width="400" height="300"></svg></div>
-<div style="float:left" >my: <svg id="my" width="300" height="400"></svg></div>
-</div>     
-        
+
+<head>
+    <style>
+
+    </style>
+    <link rel="stylesheet" href="mongostyle.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://unpkg.com/realm-web@1.2.0/dist/bundle.iife.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="code.js"></script>
+</head>
+
+<body onLoad="onLoad()">
+    <a href="ts.html" class="button">Timeseries</a>
+    <a href="index.html" class="button">Window Functions</a>
+    <a href="dashboard.html" class="button">Dashboard</a>
+   
+    <div id="app">
+
+      
+        <div class="grid-container">
+            <div v-for="chart in charts" class="chart grid-item">
+                <span class="chartlabel"> {{chart}} </span>
+                <svg width="300" height="200" class="scrollgraph" v-bind:id="chart"></svg>
+            </div>
         </div>
-    </body>
+
+     
+        <div class="code">
+            <div class="functioncode">
+                <textarea cols="60" rows="30" v-model="aggregation" placeholder=""></textarea>
+            </div>
+            <div class="derivedchart">
+                <svg class="aggout" id="value" width="400" height="300"></svg>
+            </div>
+         
+        </div>
+        <div class="errormessage"> {{errormsg}}</span>
+
+        <div>
+            <div class="funclist">
+                <select v-model="aggregation" class="wfuncs">
+                    <option v-for="option in wfuncs" v-bind:value="option.function">
+                        {{ option.name }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="runbutton"><button v-on:click="updateAggreagtion">Test Window Function</button> </div>
+        </div>
+
+ 
+    
+</div> 
+
+
+</body>
+
 </html>

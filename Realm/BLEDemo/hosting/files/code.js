@@ -7,7 +7,7 @@ let vueapp = null;
 
 
 
-const ranges = { a: 4, g: 1000, m: 500, v: 1 } //Scaling
+const ranges = { a: 4, g: 1000, m: 500,i:180, v: 1 } //Scaling
 const icons = { }
 
 async function initRealm() {
@@ -26,7 +26,7 @@ function initVue() {
     let v = new Vue({
         el: '#app',
         data: {
-            charts: ['ax', 'ay', 'az', 'gx', 'gy', 'gz'/*, 'mx', 'my', 'mz'*/],
+            charts: ['ax', 'ay', 'az', 'gx', 'gy', 'gz','in','my'/*, 'mx', 'my', 'mz'*/],
 
             aggregation: "",
             errormsg: "",

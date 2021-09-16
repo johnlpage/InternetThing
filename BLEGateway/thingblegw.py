@@ -5,6 +5,7 @@ import csv
 import datetime
 import time
 import struct
+import math
 
 DEVICENAME = "InternetThing"
 SERVICEUUID = "90db"
@@ -76,6 +77,11 @@ class NotifyDelegate(DefaultDelegate):
                 rec[valname] = (value - 5000) / scale[c]
             c=c+1
 
+        #Compute Heading and Angle here
+        #The edge may not be able to but the gateway can
+        #In this case atan2 might not be native (actually it is)
+      
+        rec['in'] = math.atan2(-rec['gy'], -rec['gz']) * 57.2957795;
         write_to_mongoDB(rec)
 
 

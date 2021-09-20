@@ -23,6 +23,7 @@ public class WriteWorker implements Runnable {
 	Document notfull = new Document("$lt", 200);
 	Document addone = new Document("size", 1);
 	UpdateOptions options = new UpdateOptions().upsert(true);
+	public static final int frequencyms = 1000; /* 1 second */
 
 	/* Simulates N devices inserting X Documents */
 
@@ -44,16 +45,18 @@ public class WriteWorker implements Runnable {
 		/* This writes recordss siimulating a 9 DOF accelerometer for many devices */
 		/*
 		 * We write as fast as possible - this helps us determine how many devices we
-		 * might have
+		 * might have but also spread the data out over a long time period
 		 */
 		int r = 0;
+		long firstDate = new Date().getTime();
+
 		ArrayList<Document> buffer = new ArrayList<Document>();
 		for (int x = 0; x < nCalls; x++) {
 			for (int d = devicemin; d <= devicemax; d++) {
 				Document doc = new Document("device", d);
-				doc.append("ts", new Date());
+				doc.append("ts", new Date(firstDate + x * frequencyms));
 				for (String f : vnames) {
-					doc.append(f, Math.random());
+					doc.append(f, Math.sin((x * 6.28) / nCalls));
 				}
 				buffer.add(doc);
 				r++;

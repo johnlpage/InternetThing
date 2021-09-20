@@ -23,7 +23,7 @@ public class ReadWorker implements Runnable {
 	long starttime;
 	long endtime;
 	MongoCollection<Document> coll;
-	final int SECONDSTOREAD = 5;
+	final int SECONDSTOREAD = 60;
 
 	/* Simulates N devices inserting X Documents */
 

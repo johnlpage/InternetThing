@@ -59,10 +59,11 @@ public class TSTest {
 			mode = Integer.parseInt(args[4]);
 
 		}
-
+		logger.info("Threads:{} Devices:{}  Time: {} simulated mins ",nThreads,nThreads*devicesPerThread,nCalls/6);
+		logger.info("{} Metrics ",nThreads*devicesPerThread*nCalls*9);
 		MongoClient mongoClient = MongoClients.create(uri);
 		MongoDatabase database = mongoClient.getDatabase("tstest");
-		readings = database.getCollection("readings");
+		readings = database.getCollection("readings_"+mode);
 
 		ExecutorService writepool = Executors.newFixedThreadPool(nThreads + 1);
 		ExecutorService readpool = Executors.newFixedThreadPool(nThreads + 1);
@@ -83,7 +84,7 @@ public class TSTest {
 				logger.info("Timeseries Mode");
 				CreateCollectionOptions options = new CreateCollectionOptions();
 				options.timeSeriesOptions(new TimeSeriesOptions("ts").metaField("device"));
-				database.createCollection("readings", options);
+				database.createCollection("readings_2", options);
 				readings.createIndex(new Document("device", 1).append("ts", 1));
 				break;
 

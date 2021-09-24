@@ -23,7 +23,7 @@ public class WriteWorker implements Runnable {
 	Document notfull = new Document("$lt", 200);
 	Document addone = new Document("size", 1);
 	UpdateOptions options = new UpdateOptions().upsert(true);
-	public static final int frequencyms = 1000; /* 1 second */
+	public static final int frequencyms = 5000; /* 5 second */
 
 	/* Simulates N devices inserting X Documents */
 
@@ -51,12 +51,15 @@ public class WriteWorker implements Runnable {
 		long firstDate = new Date().getTime();
 
 		ArrayList<Document> buffer = new ArrayList<Document>();
+		Double dNcalls = new  Double(nCalls);
 		for (int x = 0; x < nCalls; x++) {
+			Double val =  Math.sin( (new Double(x) * 6.28) / dNcalls);
+			
 			for (int d = devicemin; d <= devicemax; d++) {
 				Document doc = new Document("device", d);
 				doc.append("ts", new Date(firstDate + x * frequencyms));
 				for (String f : vnames) {
-					doc.append(f, Math.sin((x * 6.28) / nCalls));
+					doc.append(f,val+d);
 				}
 				buffer.add(doc);
 				r++;

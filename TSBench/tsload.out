@@ -1,0 +1,90 @@
+11:11:31.836 [main] INFO  com.mongodb.jlp.tstest.TSTest - 32 - 0.0.1
+11:11:31.844 [main] INFO  com.mongodb.jlp.tstest.TSTest - 62 - Threads:20 Devices:3000  Time: 4320 simulated mins 
+11:11:31.848 [main] INFO  com.mongodb.jlp.tstest.TSTest - 63 - 699840000 Metrics 
+11:11:32.293 [main] INFO  com.mongodb.jlp.tstest.TSTest - 73 - Write Test
+11:11:33.134 [main] INFO  com.mongodb.jlp.tstest.TSTest - 84 - Timeseries Mode
+11:11:33.215 [pool-1-thread-5] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+11:11:33.215 [pool-1-thread-3] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+11:11:33.214 [pool-1-thread-1] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+11:11:33.214 [pool-1-thread-2] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+11:11:33.216 [pool-1-thread-4] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+11:11:33.224 [pool-1-thread-7] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+11:11:33.216 [pool-1-thread-6] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+11:11:33.240 [pool-1-thread-8] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+11:11:33.259 [pool-1-thread-9] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+11:11:33.267 [pool-1-thread-10] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+11:11:33.269 [pool-1-thread-12] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+11:11:33.275 [pool-1-thread-14] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+11:11:33.277 [pool-1-thread-15] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+11:11:33.280 [pool-1-thread-16] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+11:11:33.283 [pool-1-thread-17] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+11:11:33.285 [pool-1-thread-18] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+11:11:33.293 [pool-1-thread-20] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+11:11:33.269 [pool-1-thread-11] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+11:11:33.285 [pool-1-thread-19] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+11:11:33.294 [pool-1-thread-21] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+11:11:33.294 [pool-1-thread-13] INFO  com.mongodb.jlp.tstest.WriteWorker - 42 - Starting Writer
+18:46:21.742 [pool-1-thread-16] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:21.987 [pool-1-thread-14] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:22.193 [pool-1-thread-9] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:28.855 [pool-1-thread-11] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:30.298 [pool-1-thread-12] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:33.928 [pool-1-thread-10] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:34.030 [pool-1-thread-15] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:36.515 [pool-1-thread-21] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:37.624 [pool-1-thread-4] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:38.297 [pool-1-thread-6] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:39.074 [pool-1-thread-8] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:40.100 [pool-1-thread-5] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:41.047 [pool-1-thread-1] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:41.387 [pool-1-thread-3] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:42.143 [pool-1-thread-2] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:42.159 [pool-1-thread-17] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:42.554 [pool-1-thread-19] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:42.584 [pool-1-thread-7] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:42.637 [pool-1-thread-13] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:42.823 [pool-1-thread-20] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:43.053 [pool-1-thread-18] INFO  com.mongodb.jlp.tstest.WriteWorker - 74 - 3888000 Readings written by thread
+18:46:43.055 [main] INFO  com.mongodb.jlp.tstest.TSTest - 117 - Write Test: Time Taken 27310761 ms
+18:46:43.055 [main] INFO  com.mongodb.jlp.tstest.TSTest - 125 - Read Test
+18:46:43.058 [pool-2-thread-2] INFO  com.mongodb.jlp.tstest.ReadWorker - 45 - Starting Reader
+18:46:43.058 [pool-2-thread-1] INFO  com.mongodb.jlp.tstest.ReadWorker - 45 - Starting Reader
+18:46:43.066 [pool-2-thread-3] INFO  com.mongodb.jlp.tstest.ReadWorker - 45 - Starting Reader
+18:46:43.068 [pool-2-thread-4] INFO  com.mongodb.jlp.tstest.ReadWorker - 45 - Starting Reader
+18:46:43.077 [pool-2-thread-5] INFO  com.mongodb.jlp.tstest.ReadWorker - 45 - Starting Reader
+18:46:43.079 [pool-2-thread-6] INFO  com.mongodb.jlp.tstest.ReadWorker - 45 - Starting Reader
+18:46:43.084 [pool-2-thread-7] INFO  com.mongodb.jlp.tstest.ReadWorker - 45 - Starting Reader
+18:46:43.087 [pool-2-thread-8] INFO  com.mongodb.jlp.tstest.ReadWorker - 45 - Starting Reader
+18:46:43.093 [pool-2-thread-9] INFO  com.mongodb.jlp.tstest.ReadWorker - 45 - Starting Reader
+18:46:43.104 [pool-2-thread-10] INFO  com.mongodb.jlp.tstest.ReadWorker - 45 - Starting Reader
+18:46:43.106 [pool-2-thread-11] INFO  com.mongodb.jlp.tstest.ReadWorker - 45 - Starting Reader
+18:46:43.122 [pool-2-thread-12] INFO  com.mongodb.jlp.tstest.ReadWorker - 45 - Starting Reader
+18:46:43.127 [pool-2-thread-13] INFO  com.mongodb.jlp.tstest.ReadWorker - 45 - Starting Reader
+18:46:43.133 [pool-2-thread-14] INFO  com.mongodb.jlp.tstest.ReadWorker - 45 - Starting Reader
+18:46:43.134 [pool-2-thread-15] INFO  com.mongodb.jlp.tstest.ReadWorker - 45 - Starting Reader
+18:46:43.143 [pool-2-thread-16] INFO  com.mongodb.jlp.tstest.ReadWorker - 45 - Starting Reader
+18:46:43.143 [pool-2-thread-17] INFO  com.mongodb.jlp.tstest.ReadWorker - 45 - Starting Reader
+18:46:43.153 [pool-2-thread-18] INFO  com.mongodb.jlp.tstest.ReadWorker - 45 - Starting Reader
+18:46:43.153 [pool-2-thread-19] INFO  com.mongodb.jlp.tstest.ReadWorker - 45 - Starting Reader
+18:46:43.154 [pool-2-thread-20] INFO  com.mongodb.jlp.tstest.ReadWorker - 45 - Starting Reader
+18:56:10.014 [pool-2-thread-8] INFO  com.mongodb.jlp.tstest.ReadWorker - 102 - 1553668 Readings retrieved by thread
+18:56:10.837 [pool-2-thread-15] INFO  com.mongodb.jlp.tstest.ReadWorker - 102 - 1553196 Readings retrieved by thread
+18:56:11.406 [pool-2-thread-20] INFO  com.mongodb.jlp.tstest.ReadWorker - 102 - 1553586 Readings retrieved by thread
+18:56:11.432 [pool-2-thread-17] INFO  com.mongodb.jlp.tstest.ReadWorker - 102 - 1553334 Readings retrieved by thread
+18:56:11.679 [pool-2-thread-4] INFO  com.mongodb.jlp.tstest.ReadWorker - 102 - 1553354 Readings retrieved by thread
+18:56:12.034 [pool-2-thread-19] INFO  com.mongodb.jlp.tstest.ReadWorker - 102 - 1553325 Readings retrieved by thread
+18:56:12.047 [pool-2-thread-3] INFO  com.mongodb.jlp.tstest.ReadWorker - 102 - 1553083 Readings retrieved by thread
+18:56:12.115 [pool-2-thread-11] INFO  com.mongodb.jlp.tstest.ReadWorker - 102 - 1553126 Readings retrieved by thread
+18:56:12.225 [pool-2-thread-10] INFO  com.mongodb.jlp.tstest.ReadWorker - 102 - 1553569 Readings retrieved by thread
+18:56:12.336 [pool-2-thread-2] INFO  com.mongodb.jlp.tstest.ReadWorker - 102 - 1553042 Readings retrieved by thread
+18:56:12.448 [pool-2-thread-9] INFO  com.mongodb.jlp.tstest.ReadWorker - 102 - 1553524 Readings retrieved by thread
+18:56:12.869 [pool-2-thread-14] INFO  com.mongodb.jlp.tstest.ReadWorker - 102 - 1553575 Readings retrieved by thread
+18:56:12.920 [pool-2-thread-16] INFO  com.mongodb.jlp.tstest.ReadWorker - 102 - 1553591 Readings retrieved by thread
+18:56:12.986 [pool-2-thread-1] INFO  com.mongodb.jlp.tstest.ReadWorker - 102 - 1553679 Readings retrieved by thread
+18:56:12.998 [pool-2-thread-6] INFO  com.mongodb.jlp.tstest.ReadWorker - 102 - 1553185 Readings retrieved by thread
+18:56:13.046 [pool-2-thread-12] INFO  com.mongodb.jlp.tstest.ReadWorker - 102 - 1553327 Readings retrieved by thread
+18:56:13.173 [pool-2-thread-5] INFO  com.mongodb.jlp.tstest.ReadWorker - 102 - 1553395 Readings retrieved by thread
+18:56:13.236 [pool-2-thread-18] INFO  com.mongodb.jlp.tstest.ReadWorker - 102 - 1553944 Readings retrieved by thread
+18:56:13.270 [pool-2-thread-7] INFO  com.mongodb.jlp.tstest.ReadWorker - 102 - 1553245 Readings retrieved by thread
+18:56:14.479 [pool-2-thread-13] INFO  com.mongodb.jlp.tstest.ReadWorker - 102 - 1553641 Readings retrieved by thread
+18:56:14.480 [main] INFO  com.mongodb.jlp.tstest.TSTest - 139 - Read Test: Time Taken 571424 ms

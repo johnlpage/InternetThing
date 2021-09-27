@@ -46,7 +46,11 @@ def connect_to_mongoDB():
 def flush_batch():
     global writebatch
     if len(writebatch) > 0:
-        collection.insert_many(writebatch)
+        try:
+            rval = collection.insert_many(writebatch)
+            #pprint(rval.inserted_ids)
+        except Exception as e:
+            pprint(e)
         writebatch = []
 
 

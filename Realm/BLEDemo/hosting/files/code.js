@@ -7,7 +7,7 @@ let vueapp = null;
 
 
 
-const ranges = { a: 4, g: 1000, m: 500,i:180, v: 1 } //Scaling
+const ranges = { a: 4, g: 1000, m: 500,i:180,h:360, v: 1 } //Scaling
 const icons = { }
 
 async function initRealm() {
@@ -26,7 +26,7 @@ function initVue() {
     let v = new Vue({
         el: '#app',
         data: {
-            charts: ['ax', 'ay', 'az', 'gx', 'gy', 'gz','in','my'/*, 'mx', 'my', 'mz'*/],
+            charts: ['ax', 'ay', 'az', 'gx', 'gy', 'gz','in','hd'/*, 'mx', 'my', 'mz'*/],
 
             aggregation: "",
             errormsg: "",
@@ -36,7 +36,8 @@ function initVue() {
             lastSeen: new Date(),
             timeoutHandle: 0,
             wfuncs: [],
-            testAgg: {}
+            testAgg: {},
+            derivedmessage: ""
         },
         methods: {
             updateAggreagtion: runClicked
@@ -289,7 +290,7 @@ function runClicked() {
 
 function highlightGraphs() {
     //Very simple - Run a regex for $[amx][xyz]
-    const re = /\$[amg][xyz]/g
+    const re = /\$[amgih][ndxyz]/g
     varsused = vueapp.aggregation.match(re)
     vueapp.charts.forEach(c => {
         el = document.getElementById(c);
@@ -316,6 +317,7 @@ function updateAggregation(version) {
         //console.log(result)
         if (result.ok) {
             vueapp.chartdata['value'].databuf = vueapp.chartdata['value'].databuf.concat(result.data)
+           
         } else {
             vueapp.errormsg = result.errormsg;
             console.log(result)
@@ -339,9 +341,11 @@ function updateAggregation(version) {
                     .y(function (d, i) { return vueapp.chartdata['value'].y(d); });
 
             }
+          
+            vueapp.derivedmessage = r.message;
         });
 
         vueapp.timeoutHandle = setTimeout(updateAggregation, 1, a);
-
+       
     }).catch(e => { vueapp.errormsg = e });
 }

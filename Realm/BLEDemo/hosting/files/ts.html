@@ -8,17 +8,38 @@
 
 </head>
 
-<body>
-    <a href="ts.html" class="button">Timeseries</a>
-    <a href="index.html" class="button">Window Functions</a>
-    <a href="dashboard.html" class="button">Dashboard</a>
+<body >
+    <link rel="stylesheet" href="mongostyle.css">
     <div>
+        <a href="ts.html" class="button">Timeseries Data</a>
+        <a href="ts2.html" class="button">Timeseries Collections</a>
+        <a href="index.html" class="button">Window Functions</a>
+        <a href="dashboard.html" class="button">Charts</a>
+    </div>
+    <div class="outer">
+        <div class="tsinfo">
 
-        Timeseries demo goes here.
-    
-</div> 
+            Timeseries data is normally a tuple of ( Time, Source, Reading(s))
+            <p></p>
+            For example:
+            <ul>
+                <li>Time, Stock, Price</li>
+                <li>Time, Vehicle, [ Speed , Fuel, Location]</li>
+            </ul>
+            Data in Database is recorded in Blocks (Because that's how Disks work)<p>
+                Data is Read/Written and cached by the block.<p></p>
+                New data fills empty blocks sequentially<p>
+                    Each data point has 2 index entries, an _id and its device and time. 
+        </div>
 
+        <div class="animation">
+            <video width=900 height=900 controls>
+                <source src="images/SimpleTS.mp4" type="video/mp4">
 
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
 </body>
 
 </html>

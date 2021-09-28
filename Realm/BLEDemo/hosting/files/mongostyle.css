@@ -1,12 +1,62 @@
 body {
-  background-color: white;
+  background-color: black;
   font-family: "Lucida Console", "Courier New", monospace;
-  font-size: small;
+  font-size: medium;
+}
+
+.outer { overflow: hidden; width: 100%; }
+
+.animation {
+  float: right;
+}
+
+.tsinfo {
+  margin-top: 50px;
+  width: 40%;
+  font-family: Akzidenz Grotesk BQ Light,Helvetica;
+  color: white;
+  font-size: 28px;
+  float: left;
+  outline: none;
+  border: initial;
+  background-color: black;
+  overflow: hidden; 
+ 
+  
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.errormessage {
+  font:  11px ;
+}
+
+.messages {
+  display: block;
+}
+.fntext {
+  font:  16px ;
+  color: red;
+}
 .button {
-    font: bold 11px Arial;
+  background-color: white;
+  font-family: "Lucida Console", "Courier New", monospace;
+  font-size: medium;
+    font: bold 11px ;
     text-decoration: none;
     background-color: #EEEEEE;
     color: #333333;
@@ -31,6 +81,12 @@ body {
     text-align: center;
   }
 
+  .bigcode {
+    font-family: "Lucida Console", "Courier New", monospace;
+    font-size: 30px;
+    text-align: center;
+    color:white
+  }
   .functioncode {
 float: left;
   }

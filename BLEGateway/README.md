@@ -23,3 +23,29 @@ Run as root (or che=ange your Pi to allow non root BLE scanning)
 ```
 sudo bin/python thingblegw.py
 ```
+
+
+Example Window Functions
+--------------------------
+
+Simple average of heading - required as heading is Really jumpy
+
+
+{
+  "$setWindowFields": {
+    "sortBy": {
+      "ts": 1
+    },
+    "output": {
+      "value": {
+        "$avg": "$hd",
+        "window": {
+          "documents": [
+            -50,
+            "current"
+          ]
+        }
+      }
+    }
+  }
+}

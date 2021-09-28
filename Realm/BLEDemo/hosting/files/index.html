@@ -12,49 +12,54 @@
 </head>
 
 <body onLoad="onLoad()">
-    <a href="ts.html" class="button">Timeseries</a>
+    <a href="ts.html" class="button">Timeseries Data</a>
+    <a href="ts.html" class="button">Timeseries Collections</a>
     <a href="index.html" class="button">Window Functions</a>
-    <a href="dashboard.html" class="button">Dashboard</a>
-   
+    <a href="dashboard.html" class="button">Charts</a>
+
     <div id="app">
 
-      
+
         <div class="grid-container">
+
             <div v-for="chart in charts" class="chart grid-item">
-                <span class="chartlabel"> {{chart}} </span>
+             
+                   <img v-bind:src="'images/' +chart+ '.png' ">
+                
                 <svg width="300" height="200" class="scrollgraph" v-bind:id="chart"></svg>
+                
             </div>
+
         </div>
 
-     
-        <div class="code">
-            <div class="functioncode">
-                <textarea cols="60" rows="30" v-model="aggregation" placeholder=""></textarea>
+        <div class="grid-container">
+
+            <div class="functioncode grid-item">
+                <textarea cols="60" rows="20" v-model="aggregation" placeholder=""></textarea>
+             
             </div>
-            <div class="derivedchart">
+
+            <div class="derivedchart grid-item">
+                <div class="fntext">{{derivedmessage}}  </div>
                 <svg class="aggout" id="value" width="400" height="300"></svg>
+               
             </div>
-         
-        </div>
-        <div class="errormessage"> {{errormsg}}</span>
 
-        <div>
-            <div class="funclist">
-                <select v-model="aggregation" class="wfuncs">
+            <div class="funclist grid-item">
+                <select v-model=" aggregation" class="wfuncs">
                     <option v-for="option in wfuncs" v-bind:value="option.function">
                         {{ option.name }}
                     </option>
                 </select>
+                <div class="runbutton"> <button v-on:click="updateAggreagtion">Test Window Function</button> </div>
+                <div class="messages">
+                <div class="errormessage"> {{errormsg}}</div>
+              
+                
+                </div>
             </div>
-
-            <div class="runbutton"><button v-on:click="updateAggreagtion">Test Window Function</button> </div>
         </div>
-
- 
-    
-</div> 
-
-
+    </div>
 </body>
 
 </html>

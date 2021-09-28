@@ -19,9 +19,11 @@ BATCHLEN=1
 
 values = ["ax","ay","az","gx","gy","gz","mx","my","mz"]
 scale = [1000,1000,1000,2,2,2,10,10,10]
+metric_count=0
 
 def create_timeseries_collection(client):
     try:
+        client.blescan.raw.drop()
         client.blescan.create_collection("raw",timeseries = { "timeField": "ts", "metaField": "device"})
         
     except Exception as e:
@@ -45,9 +47,12 @@ def connect_to_mongoDB():
 
 def flush_batch():
     global writebatch
+    global metric_count
     if len(writebatch) > 0:
         try:
             rval = collection.insert_many(writebatch)
+            metric_count +=  1;
+            #print(metric_count)
             #pprint(rval.inserted_ids)
         except Exception as e:
             pprint(e)
@@ -56,6 +61,7 @@ def flush_batch():
 
 def write_to_mongoDB(doc):
     global writebatch
+
 
     if collection == None:
         connect_to_mongoDB()
@@ -79,13 +85,23 @@ class NotifyDelegate(DefaultDelegate):
             value = int.from_bytes(data[c*2:c*2+2], "little")
             if value > 0:
                 rec[valname] = (value - 5000) / scale[c]
+            else:
+                print(value)
             c=c+1
 
         #Compute Heading and Angle here
         #The edge may not be able to but the gateway can
         #In this case atan2 might not be native (actually it is)
-      
-        rec['in'] = math.atan2(-rec['gy'], -rec['gz']) * 57.2957795;
+        try:
+            rec['in'] = math.atan2(rec['mz'], rec['my']) * 57.2957795;
+            direction =  math.atan2(rec['my'], rec['mx']) * 57.2957795 * 3  -180 ;
+            rec['hd'] = direction;
+            #pprint(rec)
+        except Exception as e:
+            print(e)
+            pprint(rec);
+          
+
         write_to_mongoDB(rec)
 
 

@@ -10,40 +10,44 @@
 
 <body >
     <link rel="stylesheet" href="mongostyle.css">
-    <div>
+    <div class="menubuttons">
+  
+        <svg aria-label="Go to the Organization Home" fill="#21313C" viewBox="0 0 216.56 448.5" class="leaf">
+            <path fill="#10aa50" d="M202.8,179.68c-23-101.47-71-128.49-83.18-147.59C113,21.7,106.25,5.91,106.25,5.91c-.66,9-1.83,14.7-9.51,21.54C81.36,41.16,16,94.42,10.51,209.72c-5.12,107.5,79,173.8,90.18,180.65,8.54,4.2,19,.08,24-3.77,40.54-27.84,96-102.07,78.06-206.92"></path>
+            <path fill="#b8c4c2" d="M109.73,333.11c-2.11,26.62-3.63,42.11-9,57.29,0,0,3.54,25.33,6,52.17l8.77,0a488.62,488.62,0,0,1,9.57-56.2C113.71,380.8,110.16,356.46,109.73,333.11Z"></path>
+            <path fill="#12924f" d="M125.06,386.39h0c-11.48-5.3-14.8-30.13-15.31-53.28A1090.8,1090.8,0,0,0,112.2,218.4c-.6-20.07.3-185.92-4.94-210.2,2.12,4.75,7.24,15.91,12.36,23.88,12.23,19.11,60.19,46.13,83.17,147.61C220.7,284.27,165.57,358.37,125.06,386.39Z"></path>
+        </svg>
+ 
         <a href="ts.html" class="button">Timeseries Data</a>
-        <a href="ts2.html" class="button">Timeseries Collections</a>
-        <a href="index.html" class="button">Window Functions</a>
-        <a href="dashboard.html" class="button">Charts</a>
-    </div>
-    <div class="outer">
+    <a href="ts2.html" class="button">Timeseries Collections</a>
+    <a href="index.html" class="button">Window Functions</a>
+    <a href="dashboard.html" class="button">Charts</a>
+</div>
+    <div onClick="document.getElementById('myVideo').play()" class="outer">
         <div class="tsinfo">
 
-            If we tell MongoDB we want to store timeseries data - it can optimise it's storage and retrieval.<p></p>
-            <div class="bigcode"> 
-                db.createCollection("readings",{timeseries:{"timeField":"timestamp","metaField":"sensor"}})
+
+            <h1>Time Series  Collections</h1>
+            <div class="bigcode"> <pre>
+    db.createCollection("readings", 
+             "timeseries" :{ "timeField" : "timestamp",
+                             "metaField" : "deviceId"}})
+            </pre>
             </div><p>
 
-            MongoDB stores data for the same device together, sharing a "bucket" document and a disk block<p>
-            Each block fills to a max size then a new one is created.<p>
+            
+            <h2> Incredibly simple to use </h2>
+            <h2>Data arranged by series+time on write.</h2>
+            <h2> 8X improvement in read speed</h2>
+            <h2> Indexing only by block, not reading</h2>
+            <h2> 3-5x less storage required.</h2>
 
-            Only blocks need indexes so indexes are much smaller.<p>
-
-            Each block covers data in a time period.<p>
-
-            Fetching data for device an time is fewer reads.<p>
-
-            Also as data is stored together for a given device+time, compression is much better<p>
-
-
-            This is 3-55X faster to Read and uses 3-5X less space on disk.<p>
-
-            This will improve over time.<p>
-
+            
+           
         </div>
 
         <div class="animation">
-            <video width=900 height=900 controls>
+            <video width=900 height=900 id='myVideo'>
                 <source src="images/RealTS.mp4" type="video/mp4">
 
                 Your browser does not support the video tag.

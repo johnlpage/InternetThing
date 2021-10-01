@@ -30,6 +30,7 @@ Example Window Functions
 
 Simple average of heading - required as heading is Really jumpy
 
+Simple smoothing X rotation
 
 {
   "$setWindowFields": {
@@ -38,7 +39,29 @@ Simple average of heading - required as heading is Really jumpy
     },
     "output": {
       "value": {
-        "$avg": "$hd",
+        "$avg": "$gx",
+        "window": {
+          "documents": [
+            -50,
+            "current"
+          ]
+        }
+      }
+    }
+  }
+}
+
+EXPONENTIAL SMOOTHING - OLDER records have less impacct so you see a change quicket
+
+
+{
+  "$setWindowFields": {
+    "sortBy": {
+      "ts": 1
+    },
+    "output": {
+      "value": {
+        "$avg": "$gx",
         "window": {
           "documents": [
             -50,

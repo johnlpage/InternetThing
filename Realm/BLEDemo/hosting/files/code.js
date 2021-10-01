@@ -251,7 +251,7 @@ function updateData() {
 
 //Run an aggregation which fetches all data for the last n datapoints as seen on the graph
 function runClicked() {
-    vueapp.errormsg = "Running Window Function Aggregation";
+    vueapp.errormsg = "";
 
     try {
         console.log(vueapp.aggregation)
@@ -323,7 +323,7 @@ function updateAggregation(version) {
             console.log(result)
             return;
         }
-
+        //vueapp.errormsg  = ""
         //Adjust the scale for the largest data item we have seen 
         result.data.forEach((r) => {
 
@@ -342,7 +342,7 @@ function updateAggregation(version) {
 
             }
           
-            vueapp.derivedmessage = r.message;
+            if(r.message) vueapp.errormsg  = r.message;
         });
 
         vueapp.timeoutHandle = setTimeout(updateAggregation, 1, a);

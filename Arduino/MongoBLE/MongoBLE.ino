@@ -18,7 +18,7 @@ BLECharacteristic movementChar("d0c5",  //16-bit characteristic UUID
 
 long previousMillis = 0;  // Used to keep track of when last reading sent
 bool debug = false; //If I used #define I coudl reduce code size but don't need to for now.
-
+unsigned short value[9];
 
 void setup() {
   if (debug) {
@@ -90,10 +90,12 @@ void loop() {
 }
 
 void updateReadings() {
-  unsigned short value[9];
+ 
   float x, y, z;
 
- for(int i=0;i<9;i++) value[i]=0; //Zero out - not valid reading
+ for(int i=0;i<6;i++) value[i]=0; //Zero out , not for magnetic though - keep prev
+
+  //Acc and Gyro can do 104Hz, Mag is 20Hz
   
   if (IMU.accelerationAvailable()) {
     IMU.readAcceleration(x, y, z);
@@ -116,10 +118,11 @@ void updateReadings() {
   if (IMU.magneticFieldAvailable()) {
     IMU.readMagneticField(x, y, z);
 
-    value[6] = x * 100 + 5000; //Scaled from 1000 to 9000
-    value[7] = y * 100 + 5000;
-    value[8] = z * 100 + 5000;
-  }
+    value[6] = x * 10 + 5000; //Scaled from 1000 to 9000
+    value[7] = y * 10 + 5000;
+    value[8] = z * 10 + 5000;
+   
+  } 
 
 
   movementChar.writeValue(value, 18); // update the characteristic

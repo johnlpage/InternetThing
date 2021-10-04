@@ -37,10 +37,13 @@ function initVue() {
             timeoutHandle: 0,
             wfuncs: [],
             testAgg: {},
-            derivedmessage: ""
+            derivedmessage: "",
+            devices: ["MongoThing_001","MongoThing_002"],
+            device: "MongoThing_001"
         },
         methods: {
-            updateAggreagtion: runClicked
+            updateAggreagtion: runClicked,
+            devChanged: devChanged
         }
     })
     return v;
@@ -58,6 +61,7 @@ function initd3chart(id) {
         width = +svg.attr("width") - margin.left - margin.right,
         height = +svg.attr("height") - margin.top - margin.bottom
 
+    //svg.selectall("g").remove();
 
     /* svg.append("rect")
          .attr("class", "linechartbg")
@@ -131,7 +135,7 @@ function initd3chart(id) {
         .attr("class", "line")
         .attr("id", `p_${id}`)
         .transition()
-        .duration(15)
+        .duration(40)
         .ease(d3.easeLinear)
         .on("start", tickv);
 }
@@ -169,7 +173,7 @@ function tickv() {
     //If we clear just enough we never get past the issue and it stays jerky
 
     if (cdata.databuf.length > 25) {
-        console.log("Catchup")
+        console.log(`Catchup ${cdata.databuf.length}`)
         while (cdata.databuf.length > 2) {
             datapoint = cdata.databuf.shift()[gname]
             if (datapoint == undefined || datapoint == null) {
@@ -233,10 +237,16 @@ async function onLoad() {
     updateData(); //Async Realm data pull
 }
 
+function devChanged()
+{
+    //Clear the ghraph here - not sure how
+   
+}
+
 function updateData() {
 
     user = realmapp.currentUser;
-    user.functions.getData(vueapp.lastSeen).then((result) => {
+    user.functions.getData(vueapp.lastSeen,vueapp.device).then((result) => {
 
         if (result.data.length > 0) { vueapp.lastSeen = result.data[0].ts } //Buffer comes back newest first
 
@@ -311,7 +321,7 @@ function updateAggregation(version) {
 
     //We have to remember to clear this when we change the aggregation though
 
-    Promise.all([version, user.functions.runWindowAgg(vueapp.lastSeen, vueapp.testAgg)]).then(([a, result]) => {
+    Promise.all([version, user.functions.runWindowAgg(vueapp.lastSeen, vueapp.testAgg,vueapp.device)]).then(([a, result]) => {
         if (vueapp.functionversion != a) { console.log(`cancelled ${vueapp.functionversion} != ${a}`); return; }
 
         //console.log(result)

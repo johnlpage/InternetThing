@@ -5,6 +5,10 @@
    Accreleration is 1000-9000 with 0 at 5000 anfd in first 3 bytes
    GYRO and MAG are TODO
 */
+
+
+#define UNIQUEDEVICENAME "MongoThing_002"
+
 #include <ArduinoBLE.h>
 #include <Arduino_LSM9DS1.h>
 
@@ -45,7 +49,7 @@ void setup() {
      and can be used by remote devices to identify this BLE device
      The name can be changed but maybe be truncated based on space left in advertisement packet
   */
-  BLE.setLocalName("InternetThing");
+  BLE.setLocalName(UNIQUEDEVICENAME);
   BLE.setAdvertisedService(dataService); // add the service UUID
   dataService.addCharacteristic( movementChar); // add the movement characteristic
   BLE.addService(dataService); // Add the  service
@@ -76,7 +80,7 @@ void loop() {
     // while the central is connected:
     while (central.connected()) {
       long currentMillis = millis();
-      if (currentMillis - previousMillis >= 20) {
+      if (currentMillis - previousMillis >= 50) {
         previousMillis = currentMillis;
         updateReadings();
       }

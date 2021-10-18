@@ -7,7 +7,7 @@ let vueapp = null;
 
 
 
-const ranges = { a: 4, g: 1000, m: 500,i:180,h:360, v: 1 } //Scaling
+const ranges = { a: 2, g: 750, m: 500,i:180,h:360, v: 1 } //Scaling
 const icons = { }
 
 async function initRealm() {
@@ -26,11 +26,12 @@ function initVue() {
     let v = new Vue({
         el: '#app',
         data: {
-            charts: ['ax', 'ay', 'az', 'gx', 'gy', 'gz','in','hd'/*, 'mx', 'my', 'mz'*/],
+            charts: ['ax', 'ay', 'az', 'gx', 'gy', 'gz'/*,'in','hd'/*, 'mx', 'my', 'mz'*/],
+            labels: { ax: "Forwards Acceleration", ay: "Sideways Acceleration", az: "Vertical Acceleration", gx: "Roll Speed", gy: "Pitch Speed", gz: "Yaw Speed"},
 
             aggregation: "",
             errormsg: "",
-
+            username: "Amazon",
             chartdata: {},
             functionversion: 1,
             lastSeen: new Date(),
@@ -43,6 +44,7 @@ function initVue() {
         },
         methods: {
             updateAggreagtion: runClicked,
+            stopAggregation,
             devChanged: devChanged
         }
     })
@@ -235,6 +237,11 @@ async function onLoad() {
     vueapp.charts.forEach((name) => { initd3chart(name) });
     initd3chart("value")
     updateData(); //Async Realm data pull
+
+    //Was looking at 3d model but thats slow in JS
+    //init3d();
+    //animate3d();
+
 }
 
 function devChanged()
@@ -307,11 +314,26 @@ function highlightGraphs() {
         id=`$${c}`;
         console.log(id)
         if (el && varsused && varsused.includes(id)) 
-        { el.style.opacity = 1  }
+        { el.parentElement.style.opacity = 1  }
         else
-         { el.style.opacity = 0.1 }
+         { el.parentElement.style.opacity = 0.1 }
     });
     console.log(varsused)
+}
+
+function showGraphs() {
+    vueapp.charts.forEach(c => {
+        el = document.getElementById(c);
+        id=`$${c}`;
+         el.parentElement.style.opacity = 1 
+    });
+}
+
+function stopAggregation()
+{
+    vueapp.functionversion++;
+    showGraphs();
+
 }
 
 function updateAggregation(version) {
@@ -321,7 +343,7 @@ function updateAggregation(version) {
 
     //We have to remember to clear this when we change the aggregation though
 
-    Promise.all([version, user.functions.runWindowAgg(vueapp.lastSeen, vueapp.testAgg,vueapp.device)]).then(([a, result]) => {
+    Promise.all([version, user.functions.runWindowAgg(vueapp.lastSeen, vueapp.testAgg,vueapp.device,vueapp.username)]).then(([a, result]) => {
         if (vueapp.functionversion != a) { console.log(`cancelled ${vueapp.functionversion} != ${a}`); return; }
 
         //console.log(result)

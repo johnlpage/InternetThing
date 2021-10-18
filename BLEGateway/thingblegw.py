@@ -6,6 +6,7 @@ import datetime
 import time
 import struct
 import math
+import threading
 
 DEVICENAME = "MongoThing_"
 SERVICEUUID = "90db"
@@ -23,7 +24,7 @@ scale = [1000,1000,1000,2,2,2,10,10,10]
 
 def create_timeseries_collection(client):
     try:
-        client.blescan.raw.drop()
+        #client.blescan.raw.drop()
         client.blescan.create_collection("raw",timeseries = { "timeField": "ts", "metaField": "device"})    
     except Exception as e:
         print(e) 
@@ -141,7 +142,7 @@ def find_things(things):
     #Start a Scanner which will find things and add them to our array
     while len(thingsfound) == 0:
         scanner = Scanner().withDelegate(ScanDelegate(thingsfound))
-        scanner.scan(5.0) #We cannot connect whilst scanning so we need to scan up front
+        scanner.scan(10.0) #We cannot connect whilst scanning so we need to scan up front
 
     print(f"Setting up {len(thingsfound)} things.")
     
@@ -150,6 +151,11 @@ def find_things(things):
         if thing:
             things.append(thing)
 
+def reconnect_thing(thing):
+    while thing['sensor'] == None:
+        thing['sensor'] = setupThing(thing)
+
+    
 
 if __name__ == "__main__":
 
@@ -178,23 +184,33 @@ if __name__ == "__main__":
 
     #Main loop
     while True:
+        #We can't let queues of BT messages build up
+
         for thing in things:
-            try:
-                for x in range(2):
-                    thing['sensor'].waitForNotifications(0)
-                   
+            try:       
+                for x in range (10):
+                    if thing['sensor']:
+                        thing['sensor'].waitForNotifications(0.005) 
+
             except Exception as e:
+                #The issue here is we stop reading from all of them!!
                 print(e)    
-                print(f"{thing['name']} is broken - reconnecting")
+               
                 try:
                     thing['sensor'].disconnect() #May break
                 except:
                     pass
                 try:
-                    thing['sensor'] = setupThing(thing)
+                    print(f"{thing['name']} is broken - reconnecting")
+                    x = threading.Thread(target=reconnect_thing,args=(thing,))
+                    thing['sensor'] = None;
+                    x.start()
+                    
                 except Exception as e:
                     print(e)
         flush_batch()
+
+
              
 
 

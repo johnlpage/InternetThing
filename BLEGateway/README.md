@@ -30,6 +30,9 @@ Example Window Functions
 
 Simple average of heading - required as heading is Really jumpy
 
+For example for each data point we can take the average of it and the 50 befor it to smooth out something like rotation speed
+its hard to turn something like this smoothly by hand so something showing soeed is better averaged, we could alos use that better if we were calculating the total are under that graph for distance/enegrgy
+
 Simple smoothing X rotation
 
 {
@@ -51,6 +54,8 @@ Simple smoothing X rotation
   }
 }
 
+But a simple average like that means a change take a long time to show up - what if we made more recent value weight more heavily
+
 EXPONENTIAL SMOOTHING - OLDER records have less impacct so you see a change quicket
 
 
@@ -61,14 +66,17 @@ EXPONENTIAL SMOOTHING - OLDER records have less impacct so you see a change quic
     },
     "output": {
       "value": {
-        "$avg": "$gx",
-        "window": {
-          "documents": [
-            -50,
-            "current"
-          ]
+        "$expMovingAvg": {
+          input: "$gy",
+          N: 50
         }
       }
     }
   }
 }
+
+ mongosh mongosh "mongodb+srv://cluster0.4rfwx.mongodb.net/myFirstDatabase" --apiVersion 1 --username blescan
+
+
+  [{"$match":{"device":"MongoThing_001","ts":{"$gt":"2021-10-04T10:49:13.643Z"}}},{"$setWindowFields":{"sortBy":{"ts":1},"output":{"value":{"$expMovingAverage":{"input":"$gy","N":50}}}}},{"$match":{"ts":{"$gt":"2021-10-04T10:49:18.033Z"}}},{"$project":{"value":1,"ts":1,"message":1,"_id":0}}]
+

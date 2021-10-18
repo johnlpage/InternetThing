@@ -9,6 +9,9 @@
     <script src="https://unpkg.com/realm-web@1.2.0/dist/bundle.iife.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="code.js"></script>
+    <script src="3dcode.js"></script>
+    <script src="http://threejs.org/build/three.min.js"></script>
+    <script src="http://threejs.org/examples/js/loaders/STLLoader.js"></script>
 </head>
 
 <body onLoad="onLoad()">
@@ -46,12 +49,15 @@
             <div class="grid-container">
 
                 <div v-for="chart in charts" class="chart grid-item">
+                    <div class="label">{{labels[chart]}}</div>
+                    <img v-bind:class="'icon icon_'+chart" v-bind:src="'images/' +chart+ '.png' ">
 
-                    <img class="icon" v-bind:src="'images/' +chart+ '.png' ">
-
-                    <svg width="300" height="150" class="scrollgraph" v-bind:id="chart"></svg>
-
+                    <svg width="300" height="250" class="scrollgraph" v-bind:id="chart"></svg>
+              
                 </div>
+                <!-- div width="300" height="150" class=" rid-item">
+                    <div  class="test" id="test" ></div>
+                </div-->
 
             </div>
 
@@ -62,14 +68,14 @@
                 </div>
                 <div class="grid-item">
                     <div class="funclist">
+                        <div class="namediv"><span class="namelabel">Name:</span> <input v-model="username" class="namebox"></div>
                         <select class="dropdown" v-model=" aggregation" class="wfuncs">
                             <option class="dropdown" v-for="option in wfuncs" v-bind:value="option.function">
                                 {{ option.name }}
                             </option>
                         </select>
-                        <button class="runbutton" v-on:click="updateAggreagtion">Test Window Function</button>
-
-
+                        <button class="runbutton" v-on:click="updateAggreagtion">Run</button>
+                        <button class="runbutton" v-on:click="stopAggregation">Stop</button>
                         <div class="errormessage">{{errormsg}} </div>
                     </div>
                 </div>

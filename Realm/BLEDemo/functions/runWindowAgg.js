@@ -10,7 +10,9 @@ exports = async function(lastSeen,windowFunc,device){
       //Look back at most 5 seconds
       var t = new Date();
       t.setSeconds(t.getSeconds() -5 );
-      var limitwindow = {$match:{device:device, ts:{$gt:t}}} //Only the changed ones returned
+      var timewindow = {$match:{ts:{$gt:t}}} //Limit the cursor size
+      var nonindexdevice = { $set: { device : { $concat :["_","$device"]}}}
+      var filterdevice =  {$match : { device : `_${device}`}}
       var match = {$match:{ts:{$gt:lastSeen}}} //Only the changed ones returned
       var cleans = { $project : { value:1,ts:1,message:1,_id:0}}
      
@@ -18,7 +20,7 @@ exports = async function(lastSeen,windowFunc,device){
         windowFunc = [windowFunc]
       }
 
-      var pipeline = [limitwindow].concat(windowFunc).concat([match,cleans]);
+      var pipeline = [timewindow,nonindexdevice,filterdevice].concat(windowFunc).concat([match,cleans]);
       
         console.log(JSON.stringify(pipeline))
         

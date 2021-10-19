@@ -6,7 +6,18 @@ exports = async function(lastSeen,device){
     rval={}
     try {
       //Fimd the last N in reverse order limiting by total and also no further back than lasSeen
-      var result = await collection.find({ts:{$gt:lastSeen},device:device}).sort({ts:-1}).limit(300).toArray();
+      
+      //Workaround for indexing isue in early TS
+var pipe=[
+  { '$match': { ts: { '$gt': lastSeen} } },
+  { '$set' : { device: {$concat:["_","$device"]} }},
+  { '$match': { device: `_${device}` } },
+  { '$sort': { ts: -1 } },
+  { '$limit': 300 },
+  {$set : { az: { $subtract : ["$az",1.0]}}}
+]
+
+      var result = await collection.aggregate(pipe).toArray();
       
       rval = { ok: true, data: result }
       console.log(result.length)

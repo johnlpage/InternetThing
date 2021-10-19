@@ -4,6 +4,11 @@
   /* IE */
 }
 
+.test {
+  width: 200px;
+  height: 150px;
+
+}
 .devicedropdown {
   float: right;
   margin-left: 4px;
@@ -56,10 +61,54 @@ body {
 .animation {
   float: right;
 }
+
+
 .icon {
+  margin-top: 80px;
   width: 80;
   height: 80;
 }
+
+.icon_ax  {
+  width: 60;
+  height: 60;
+  animation: mover_ax 2s infinite  ease-in-out alternate;
+}
+
+@-webkit-keyframes mover_ax {
+  0% { transform: translate(10px,40px); }
+  100% { transform: translate(60px,-20px); }
+}
+
+.icon_ay  {
+  width: 60;
+  height: 60;
+  animation: mover_ay 2s infinite ease-in-out alternate;
+}
+
+@-webkit-keyframes mover_ay {
+  0% { transform: translate(-0px,-20px); }
+  100% { transform: translate(60px,40px); }
+}
+
+.icon_az  {
+  width: 60;
+  height: 60;
+  animation: mover_az 2s infinite ease-in-out alternate;
+}
+
+@-webkit-keyframes mover_az {
+  0% { transform: translate(20px,-20px); }
+  100% { transform: translate(20px,50px); }
+}
+
+.label {
+  width: 80%,
+  color: green
+
+
+}
+
 .tsinfo {
   margin-top: 50px;
   width: 40%;
@@ -193,6 +242,39 @@ pre {
      padding: 5px;
   font-family: Akzidenz, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
+}
+
+.namediv {
+  width: 100%; 
+  display:  none; /* should be flex */
+  margin-bottom: 10px;
+}
+
+.namelabel {
+  margin-top: 5px;
+  padding: 5px;
+  color: rgb(93, 108, 116);
+ 
+  padding: 5px;
+font-family: Akzidenz, "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 13px;
+}
+.namebox {
+  flex-grow: 1;
+  width: 80%;
+  height: 36px;
+  border-radius: 4px;
+  padding-left: 12px;
+  font-size: 14px;
+  font-weight: normal;
+  font-family: Akzidenz, "‘Helvetica Neue’", Helvetica, Arial, sans-serif;
+  border: 1px solid rgb(184, 196, 194);
+  transition: border-color 150ms ease-in-out 0s;
+  z-index: 1;
+  outline: none;
+  color: rgb(93, 108, 116);
+  background-color: rgb(255, 255, 255);
+  padding-right: 12px;
 }
 
 .dropdown {

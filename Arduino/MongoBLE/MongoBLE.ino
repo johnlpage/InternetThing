@@ -7,7 +7,7 @@
 */
 
 
-#define UNIQUEDEVICENAME "MongoThing_002"
+#define UNIQUEDEVICENAME "MongoThing_003"
 
 #include <ArduinoBLE.h>
 #include <Arduino_LSM9DS1.h>

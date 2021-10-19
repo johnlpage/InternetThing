@@ -20,15 +20,15 @@ BATCHLEN=2
 sent=0
 values = ["ax","ay","az","gx","gy","gz","mx","my","mz"]
 scale = [1000,1000,1000,2,2,2,10,10,10]
-
+colname = "raw"
 
 def create_timeseries_collection(client):
     try:
         #client.blescan.raw.drop()
-        client.blescan.create_collection("raw",timeseries = { "timeField": "ts", "metaField": "device"})    
+        client.blescan.create_collection(colname,timeseries = { "timeField": "ts", "metaField": "device"})    
     except Exception as e:
         print(e) 
-    client.blescan.raw.create_index([("device",1),("ts",1)])
+    client.blescan[colname].create_index([("device",1),("ts",1)])
 
 def connect_to_mongoDB():
     global collection
@@ -40,7 +40,7 @@ def connect_to_mongoDB():
                 print(e)  # No readable config
         client = MongoClient(conn_str)
         create_timeseries_collection(client)
-        collection = client.blescan.raw
+        collection = client.blescan[colname]
     except Exception as e:
         print(e)
         collection = None

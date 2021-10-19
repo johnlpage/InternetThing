@@ -1,6 +1,6 @@
 let realmapp = null;
 let vueapp = null;
-
+const slideTime=55
 
 //TODO - Move these to vueApp
 
@@ -137,7 +137,7 @@ function initd3chart(id) {
         .attr("class", "line")
         .attr("id", `p_${id}`)
         .transition()
-        .duration(40)
+        .duration(slideTime)
         .ease(d3.easeLinear)
         .on("start", tickv);
 }
@@ -174,7 +174,7 @@ function tickv() {
     //If we built up a backlog in the data buffer (25 - 0.5 seconds) clear it down to 2
     //If we clear just enough we never get past the issue and it stays jerky
 
-    if (cdata.databuf.length > 25) {
+    if (cdata.databuf.length > 15) {
         console.log(`Catchup ${cdata.databuf.length}`)
         while (cdata.databuf.length > 2) {
             datapoint = cdata.databuf.shift()[gname]

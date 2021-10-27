@@ -1,6 +1,6 @@
 let realmapp = null;
 let vueapp = null;
-const slideTime=55
+const slideTime=15
 
 //TODO - Move these to vueApp
 
@@ -28,7 +28,7 @@ function initVue() {
         data: {
             charts: ['ax', 'ay', 'az', 'gx', 'gy', 'gz'/*,'in','hd'/*, 'mx', 'my', 'mz'*/],
             labels: { ax: "Forwards Acceleration", ay: "Sideways Acceleration", az: "Vertical Acceleration", gx: "Roll Speed", gy: "Pitch Speed", gz: "Yaw Speed"},
-
+            lastmessagetime: new Date(),
             aggregation: "",
             errormsg: "",
             username: "Amazon",
@@ -373,10 +373,17 @@ function updateAggregation(version) {
                     .y(function (d, i) { return vueapp.chartdata['value'].y(d); });
 
             }
-          
-            if(r.message) vueapp.errormsg  = r.message;
-        });
+            //Want these to go away after a while
 
+            if(r.message) {
+                vueapp.errormsg  = r.message;
+                vueapp.lastmessagetime = new Date();
+            }
+
+        });
+        if( new Date().getTime() - vueapp.lastmessagetime.getTime() > 10000 ) {
+            vueapp.errormsg = ""
+        }
         vueapp.timeoutHandle = setTimeout(updateAggregation, 1, a);
        
     }).catch(e => { vueapp.errormsg = e });

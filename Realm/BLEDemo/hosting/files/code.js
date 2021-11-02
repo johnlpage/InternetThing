@@ -39,7 +39,7 @@ function initVue() {
             wfuncs: [],
             testAgg: {},
             derivedmessage: "",
-            devices: ["MongoThing_001","MongoThing_002"],
+            devices: ["MongoThing_001","MongoThing_002","MongoThing_003"],
             device: "MongoThing_001"
         },
         methods: {

@@ -103,7 +103,7 @@ class ScanDelegate(DefaultDelegate):
         self.things = things
 
     def handleDiscovery(self, dev, isNewDev, isNewData):          
-            if dev.connectable:
+            if dev.connectable and isNewDev:
                 name = dev.getValueText(9)
                 if name and name.startswith("MongoThing_"):
                     addr = dev.addr

@@ -4,6 +4,13 @@
   /* IE */
 }
 
+.qrcode {
+
+  display: block;
+  margin: 0 auto;
+  width: 256px;
+ 
+}
 .test {
   width: 200px;
   height: 150px;

@@ -40,12 +40,14 @@ function initVue() {
             testAgg: {},
             derivedmessage: "",
             devices: ["MongoThing_001","MongoThing_002","MongoThing_003"],
-            device: "MongoThing_001"
+            device: "MongoThing_001",
+            qrshown:false
         },
         methods: {
             updateAggreagtion: runClicked,
             stopAggregation,
-            devChanged: devChanged
+            devChanged: devChanged,
+            showQR
         }
     })
     return v;
@@ -334,6 +336,15 @@ function stopAggregation()
     vueapp.functionversion++;
     showGraphs();
 
+}
+
+function showQR(){
+    document.getElementById("qrcode").innerHTML="";
+    if(vueapp.qrshown) { vueapp.qrshown=false; return; }
+    vueapp.device=`Phone${Math.floor((Math.random()*65535)).toString(16)}`
+    vueapp.devices.push(vueapp.device);
+    new QRCode(document.getElementById("qrcode"), `https://bledemo-wmnyi.mongodbstitch.com/phone.html?${vueapp.device}`);
+    vueapp.qrshown=true
 }
 
 function updateAggregation(version) {

@@ -11,7 +11,7 @@ const ranges = { a: 2, g: 750, m: 500,i:180,h:360, v: 1 } //Scaling
 const icons = { }
 
 async function initRealm() {
-    realmapp = new Realm.App({ id: "bledemo-pjitb" });
+    realmapp = new Realm.App({ id: "bledemo-wmnyi" });
     const credentials = Realm.Credentials.anonymous();
 
     try {

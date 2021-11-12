@@ -1,0 +1,70 @@
+<html>
+
+<head>
+    <script src="https://unpkg.com/realm-web@1.2.0/dist/bundle.iife.js"></script>
+    <style>
+        .bigbutton {
+            width: 100%;
+            height: 50%;
+            background-color: #04AA6D;
+            border: none;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 80px;
+            margin: 4px 2px;
+            border-radius: 10%;
+        }
+    </style>
+    <script>
+        const device = "MongoThing_001";
+        let gyro = null;
+        let accel = null;
+
+        function getPermissions()
+        {
+
+        }
+
+        function log(txt) {
+            outdiv = document.getElementById(`output`);
+            content = outdiv.innerHTML;
+            content = `${content}<br/>${txt}`
+            outdiv.innerHTML = content;
+        }
+
+        async function initRealm() {
+            //This is the US Backend
+            realmapp = new Realm.App({ id: "bledemo-wmnyi" });
+            const credentials = Realm.Credentials.anonymous();
+            try {
+                const user = await realmapp.logIn(credentials);
+                log(`Connected to Realm`)
+            } catch (err) {
+                log(`Failed to log in ${err}`);
+            }
+        }
+        async function onLoad() {
+            try {
+            await initRealm();
+            if(typeof Gyroscope != "function") {
+                log('Device has no gyroscope');
+                return;
+            }
+            gyro = new Gyroscope();
+            }
+            catch(e) {
+                log(`Gyroscope: ${e.name}`)
+            }
+        }
+    </script>
+</head>
+
+<body onLoad="onLoad()">
+    <Button id="connectButton" onClick="alert(`Click`)" class="bigbutton"> Click To Connect </Button>
+    <div id="output"></div>
+</body>
+
+</html>

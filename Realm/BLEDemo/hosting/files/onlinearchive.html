@@ -6,6 +6,7 @@
     </style>
     <link rel="stylesheet" href="mongostyle.css">
 
+    <script src="https://mws.mongodb.com/static/mws.js">    </script>
 </head>
 
 <body >
@@ -21,11 +22,32 @@
 </div>
 
 
-        <div class="mongocharts">
-            <iframe
-               class="chartsframe"
-                src="https://cloud.mongodb.com/v2/612e186e76bdc137df9940d2#clusters/onlineArchive/InternetThing2"></iframe>
-        </div>
+<div class="outer">
+    <div class="tsinfo">
+
+        <h1>Online Archive</h1>
+   
+        <h2>Older data automatically moved to S3 Storage</h2>
+        <h2> Schedule and conditions configurable</h2>
+        <h2>Time Series data stored in Parquet format </h2>
+        <h2>Archived data can be queried</h2>
+        <h2>Storage costs cut dramatically</h2>
+
+      <div class="oatips">
+          Try counting with db.raw.countDocuments() or Finding one  one with db.raw.findOne()
+      </div>
+    </div>
+
+    <div class="mongoshell">
+        <h3>Atlas Cluster</h3>
+        <iframe class="monogoshellframe" title="MongoDB Web Shell" allowfullscreen="" sandbox="allow-scripts allow-same-origin" width="100%" height="300" src="http://oademo.mdbtraining.net:8281/"></iframe>
+        <h3>Atlas Datalake Archive</h3>
+        <iframe class="monogoshellframe" title="MongoDB Web Shell" allowfullscreen="" sandbox="allow-scripts allow-same-origin" width="100%" height="300" src="http://oademo.mdbtraining.net:8282/"></iframe>
+        <h3>Combined Online Archive</h3>
+        <iframe class="monogoshellframe" title="MongoDB Web Shell" allowfullscreen="" sandbox="allow-scripts allow-same-origin" width="100%" height="300" src="http://oademo.mdbtraining.net:8283/"></iframe>
+    </div>
+
+</div>
     
 
 

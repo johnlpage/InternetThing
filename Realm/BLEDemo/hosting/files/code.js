@@ -11,7 +11,7 @@ const ranges = { a: 2, g: 750, m: 500,i:180,h:360, v: 1 } //Scaling
 const icons = { }
 
 async function initRealm() {
-    realmapp = new Realm.App({ id: "bledemo-wmnyi" });
+    realmapp = new Realm.App({ id: "bledemo-jychb" });
     const credentials = Realm.Credentials.anonymous();
 
     try {
@@ -343,7 +343,7 @@ function showQR(){
     if(vueapp.qrshown) { vueapp.qrshown=false; return; }
     vueapp.device=`Phone${Math.floor((Math.random()*65535)).toString(16)}`
     vueapp.devices.push(vueapp.device);
-    new QRCode(document.getElementById("qrcode"), `https://bledemo-wmnyi.mongodbstitch.com/phone.html?${vueapp.device}`);
+    new QRCode(document.getElementById("qrcode"), `https://bledemo-jychb.mongodbstitch.com/phone.html?${vueapp.device}`);
     vueapp.qrshown=true
 }
 

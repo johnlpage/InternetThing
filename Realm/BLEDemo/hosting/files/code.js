@@ -39,7 +39,7 @@ function initVue() {
             wfuncs: [],
             testAgg: {},
             derivedmessage: "",
-            devices: ["MongoThing_001","MongoThing_002","MongoThing_003"],
+            devices: [,"MongoThing_001","MongoThing_002","MongoThing_003","MongoThing_007","MongoThing_008","MongoThing_009","MongoThing_010","MongoThing_011","MongoThing_012"],
             device: "MongoThing_001",
             qrshown:false
         },
